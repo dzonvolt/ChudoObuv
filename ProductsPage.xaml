@@ -1,0 +1,81 @@
+﻿<Page x:Class="ChudoObuv.ProductsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ChudoObuv"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ProductsPage"
+      Background="{StaticResource MainBackgroundColor}"
+      Loaded="Page_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Каталог товаров" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="23"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Button Name="AnalyticsBTN" Content="Аналитика" Margin="5" Click="AnalyticsBTN_Click" Visibility="{Binding AnalyticsButtonVisibility}"/>
+            <Button Name="OpenOrdersBTN" Content="Заказы" Margin="5" Click="OpenOrdersBTN_Click" Visibility="{Binding OrdersButtonVisibility}"/>
+            <Button Name="OpenCartBTN" Content="Открыть корзину" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="5" Click="OpenCartBTN_Click" Visibility="{Binding CartButtonVisibility}"/>
+        </StackPanel>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10" Visibility="{Binding ToolBarVisibility}">
+            <StackPanel Orientation="Horizontal" Height="23" Margin="0,0,20,0">
+                <TextBlock Text="Поиск: " HorizontalAlignment="Center"/>
+                <TextBox Name="SearchTB" Width="150" HorizontalAlignment="Center" TextChanged="SearchTB_TextChanged"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Height="23" Margin="0,0,20,0">
+                <TextBlock Text="Сортировка: " HorizontalAlignment="Center"/>
+                <ComboBox Name="SortCB" Width="150" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="SortCB_SelectionChanged">
+                    <ComboBoxItem Content="Без сортировки" IsSelected="True"/>
+                    <ComboBoxItem Content="Цена по убыванию"/>
+                    <ComboBoxItem Content="Цена по возрастанию"/>
+                </ComboBox>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Height="23">
+                <TextBlock Text="Категория: " HorizontalAlignment="Center"/>
+                <ComboBox Name="CategoryCB" Width="150" HorizontalAlignment="Center" VerticalAlignment="Center" SelectionChanged="CategoryCB_SelectionChanged" DisplayMemberPath="name"/>
+            </StackPanel>
+        </StackPanel>
+
+        <ListView Grid.Row="2" Name="ProductsListView" HorizontalContentAlignment="Stretch" ItemsSource="{Binding Products}">
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Name="AddToCartMenuItemBTN" Header="Добавить товар в коризину" Click="AddToCartMenuItemBTN_Click" Visibility="{Binding AddProductToCartVisibility}"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderBrush="Gray" BorderThickness="1" Background="{Binding BackgroundColor}">
+                        <Grid Height="100">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding ImagePath}" Grid.Column="0" Width="100"/>
+
+                            <StackPanel Grid.Column="1" Margin="5,0,0,0">
+                                <TextBlock Text="{Binding CategoryName, StringFormat='Категория: {0}'}"/>
+                                <TextBlock Text="{Binding CountString, StringFormat='Количество: {0}'}"/>
+                                <TextBlock Text="{Binding construction, StringFormat='Состсав: {0}'}" TextWrapping="Wrap"/>
+                            </StackPanel>
+
+                            <TextBlock Text="{Binding ManufacturerAndName}" Grid.Column="2" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                            
+                            <TextBlock Text="{Binding DiscountedPrice, StringFormat='{}{0} руб.'}" Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

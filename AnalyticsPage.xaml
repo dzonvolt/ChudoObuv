@@ -1,0 +1,65 @@
+﻿<Page x:Class="ChudoObuv.AnalyticsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ChudoObuv"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="Ааналитика">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Аналитика" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="23"/>
+        
+        <DockPanel Grid.Row="1">
+            <StackPanel Name="FromDatePanel" Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                <TextBlock Text="Начало периода:" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding FromDate}" DisplayDateEnd="{Binding ToDate}" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+            </StackPanel>
+            <StackPanel Name="ToDatePanel" Orientation="Horizontal" DockPanel.Dock="Top" Margin="5">
+                <TextBlock Text="Конец периода:" Margin="0,0,10,0" VerticalAlignment="Center"/>
+                <DatePicker SelectedDate="{Binding ToDate}" DisplayDateStart="{Binding FromDate}" SelectedDateChanged="DatePicker_SelectedDateChanged"/>
+            </StackPanel>
+            <StackPanel Name="FromDateTextPanel" Orientation="Horizontal" DockPanel.Dock="Top" Margin="5" Visibility="Collapsed">
+                <TextBlock Text="{Binding FromDate,StringFormat='Начало периода: {0:dd.mm.yy}'}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <StackPanel Name="ToDateTextPanel" Orientation="Horizontal" DockPanel.Dock="Top" Margin="5" Visibility="Collapsed">
+                <TextBlock Text="{Binding ToDate,StringFormat='Конец периода: {0:dd.mm.yy}'}" Margin="0,0,10,0" VerticalAlignment="Center"/>
+            </StackPanel>
+            <TextBlock Text="{Binding TotalSales, StringFormat='Общая сумма продаж: {0} руб.'}" DockPanel.Dock="Top" Margin="5"/>
+            <Grid DockPanel.Dock="Top">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Топ моделей по продажам" Grid.Row="0" HorizontalAlignment="Center" FontSize="20" Margin="5"/>
+
+                <ListView Grid.Row="1" ItemsSource="{Binding TopProducts}" HorizontalContentAlignment="Stretch">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Gray" BorderThickness="1" Padding="5">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding name, StringFormat='Наименование: {0}'}"/>
+                                    <TextBlock Text="{Binding manufacturers.name, StringFormat='Производитель: {0}'}"/>
+                                    <TextBlock Text="{Binding SalesCount, StringFormat='Продано: {0}'}"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                <Button Name="ExportBTN" Grid.Row="2" Content="Сохранить в PDF" Click="ExportBTN_Click"/>
+            </Grid>
+        </DockPanel>
+
+    </Grid>
+
+</Page>
